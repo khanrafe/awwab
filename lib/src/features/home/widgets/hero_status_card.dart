@@ -21,31 +21,38 @@ class HeroStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(HomeUiTokens.primaryCardRadius),
-        boxShadow: AppShadows.card,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          isCompact
-              ? HomeUiTokens.compactCardPadding
-              : HomeUiTokens.cardPadding,
-        ),
-        child: Column(
-          children: <Widget>[
-            isCompact
-                ? Column(
-                    children: <Widget>[
-                      _leftInfo(textTheme),
-                      const SizedBox(height: AppSpacing.md),
-                      _orb(),
-                      const SizedBox(height: AppSpacing.md),
-                      _rightInfo(textTheme),
-                    ],
-                  )
-                : Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool shouldStack = isCompact || constraints.maxWidth < 620;
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(HomeUiTokens.primaryCardRadius),
+            boxShadow: AppShadows.card,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(
+              shouldStack
+                  ? HomeUiTokens.compactCardPadding
+                  : HomeUiTokens.cardPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (shouldStack) ...<Widget>[
+                  _leftInfo(textTheme),
+                  const SizedBox(height: AppSpacing.md),
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: _orb(),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  _rightInfo(textTheme),
+                ] else
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Expanded(child: _leftInfo(textTheme)),
@@ -53,33 +60,36 @@ class HeroStatusCard extends StatelessWidget {
                       Expanded(child: _rightInfo(textTheme)),
                     ],
                   ),
-            const SizedBox(height: AppSpacing.md),
-            _xpSummary(textTheme),
-            const SizedBox(height: AppSpacing.sm),
-            TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 0, end: model.xpProgress),
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, _) => ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                child: LinearProgressIndicator(
-                  value: value,
-                  minHeight: 8,
-                  backgroundColor: const Color(0xFFE6E6F0),
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    HomeUiTokens.accentViolet,
+                const SizedBox(height: AppSpacing.md),
+                _xpSummary(textTheme),
+                const SizedBox(height: AppSpacing.sm),
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0, end: model.xpProgress),
+                  duration: const Duration(milliseconds: 700),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, _) => ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    child: LinearProgressIndicator(
+                      value: value,
+                      minHeight: 8,
+                      backgroundColor: const Color(0xFFE6E6F0),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        HomeUiTokens.accentViolet,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _leftInfo(TextTheme textTheme) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       Text(
         'AURA LEVEL',
@@ -91,13 +101,17 @@ class HeroStatusCard extends StatelessWidget {
         ),
       ),
       const SizedBox(height: AppSpacing.sm),
-      Text(
-        '${model.auraLevel}',
-        style: textTheme.headlineMedium?.copyWith(
-          fontSize: 47,
-          height: 1,
-          color: HomeUiTokens.accentViolet,
-          fontWeight: FontWeight.w800,
+      FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Text(
+          '${model.auraLevel}',
+          style: textTheme.headlineMedium?.copyWith(
+            fontSize: 47,
+            height: 1,
+            color: HomeUiTokens.accentViolet,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
       const SizedBox(height: 2),
@@ -106,7 +120,7 @@ class HeroStatusCard extends StatelessWidget {
         style: textTheme.titleMedium?.copyWith(
           color: const Color(0xFF6448E0),
           fontWeight: FontWeight.w700,
-          fontSize: 32 * 0.55,
+          fontSize: 18,
         ),
       ),
       const SizedBox(height: AppSpacing.md),
@@ -145,6 +159,7 @@ class HeroStatusCard extends StatelessWidget {
 
   Widget _rightInfo(TextTheme textTheme) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       Text(
         'SYSTEM STATUS',
@@ -158,6 +173,8 @@ class HeroStatusCard extends StatelessWidget {
       const SizedBox(height: AppSpacing.sm),
       Text(
         model.systemStatus,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: textTheme.titleMedium?.copyWith(
           fontSize: 18,
           color: const Color(0xFF3C4FC6),
@@ -168,13 +185,14 @@ class HeroStatusCard extends StatelessWidget {
       Text(
         model.statusDescription,
         style: textTheme.bodyMedium?.copyWith(
-          height: 1.4,
+          height: 1.35,
           fontWeight: FontWeight.w600,
           color: HomeUiTokens.subtitleColor,
         ),
       ),
       const SizedBox(height: AppSpacing.lg),
       Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const Icon(
             Icons.verified_user_rounded,
@@ -182,9 +200,9 @@ class HeroStatusCard extends StatelessWidget {
             size: 30,
           ),
           const SizedBox(width: AppSpacing.xs),
-          Expanded(
+          Flexible(
             child: Text(
-              'Protection\nActive',
+              'Protection Active',
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF3D4D7A),
@@ -243,7 +261,14 @@ class HeroStatusCard extends StatelessWidget {
             ),
           ),
         ),
-        const Icon(Icons.person_rounded, color: Color(0xFF0E1140), size: 140),
+        const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Icon(
+            Icons.person_rounded,
+            color: Color(0xFF0E1140),
+            size: 140,
+          ),
+        ),
         const Positioned(
           bottom: 48,
           child: Icon(Icons.auto_awesome, color: Color(0xFF7A63FF), size: 34),
@@ -254,7 +279,7 @@ class HeroStatusCard extends StatelessWidget {
 
   Widget _xpSummary(TextTheme textTheme) => LayoutBuilder(
     builder: (context, constraints) {
-      if (constraints.maxWidth < 330) {
+      if (constraints.maxWidth < 390) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -265,6 +290,8 @@ class HeroStatusCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     '${_formatNumber(model.xpCurrent)} / ${_formatNumber(model.xpTarget)} XP',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 17,
@@ -292,17 +319,24 @@ class HeroStatusCard extends StatelessWidget {
           Expanded(
             child: Text(
               '${_formatNumber(model.xpCurrent)} / ${_formatNumber(model.xpTarget)} XP',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
               ),
             ),
           ),
-          Text(
-            'Next Level: ${model.nextLevel}',
-            style: textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: HomeUiTokens.subtitleColor,
+          Flexible(
+            child: Text(
+              'Next Level: ${model.nextLevel}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: HomeUiTokens.subtitleColor,
+              ),
             ),
           ),
         ],
