@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final size = mediaQuery.size;
     final bool isTablet = ResponsiveBreakpoints.isTabletOrLarger(context);
-    final bool isCompact = size.width < 390;
+    final bool isCompact = size.width < 355;
     final double horizontalPadding = HomeUiTokens.screenHorizontalPadding(
       size.width,
     );
@@ -116,7 +116,7 @@ class _MetricsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final bool threeColumns = constraints.maxWidth >= 640;
+      final bool threeColumns = constraints.maxWidth >= 340;
 
       if (threeColumns) {
         return Row(
@@ -153,12 +153,11 @@ class _QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final bool threeColumns = constraints.maxWidth >= 700;
-      final bool twoColumns = constraints.maxWidth >= 470;
+      final bool threeColumns = constraints.maxWidth >= 360;
 
       if (threeColumns) {
         return SizedBox(
-          height: 210,
+          height: constraints.maxWidth >= 700 ? 214 : 198,
           child: Row(
             children: <Widget>[
               Expanded(child: QuickActionCard(action: actions[0])),
@@ -168,25 +167,6 @@ class _QuickActionsSection extends StatelessWidget {
               Expanded(child: QuickActionCard(action: actions[2])),
             ],
           ),
-        );
-      }
-
-      if (twoColumns) {
-        final double cardWidth = (constraints.maxWidth - AppSpacing.sm) / 2;
-        return Wrap(
-          runSpacing: AppSpacing.sm,
-          spacing: AppSpacing.sm,
-          children: actions
-              .map(
-                (action) => SizedBox(
-                  width: cardWidth,
-                  child: AspectRatio(
-                    aspectRatio: 0.95,
-                    child: QuickActionCard(action: action),
-                  ),
-                ),
-              )
-              .toList(),
         );
       }
 

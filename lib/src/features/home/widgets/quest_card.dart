@@ -47,7 +47,7 @@ class QuestCard extends StatelessWidget {
                   Text(
                     quest.title,
                     style: textTheme.titleMedium?.copyWith(
-                      fontSize: 17,
+                      fontSize: 33 * 0.55,
                       fontWeight: FontWeight.w800,
                       color: HomeUiTokens.titleColor,
                       height: 1.2,
@@ -56,6 +56,8 @@ class QuestCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     quest.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: textTheme.bodyMedium?.copyWith(
                       height: 1.35,
                       fontWeight: FontWeight.w500,
@@ -77,13 +79,24 @@ class QuestCard extends StatelessWidget {
                     color: const Color(0xFFF7F3FF),
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                   ),
-                  child: Text(
-                    '+${quest.rewardXp} XP',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF3A3D78),
-                      fontSize: 15,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Icon(
+                        Icons.hexagon,
+                        size: 14,
+                        color: Color(0xFF7A5DFF),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '+${quest.rewardXp} XP',
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF3A3D78),
+                          fontSize: 28 * 0.55,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),

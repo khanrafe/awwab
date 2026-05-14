@@ -20,7 +20,7 @@ class HomeHeader extends StatelessWidget {
             Text(
               'avvab',
               style: textTheme.headlineMedium?.copyWith(
-                fontSize: 21,
+                fontSize: 56 * 0.38,
                 height: 1,
                 letterSpacing: -0.8,
                 fontWeight: FontWeight.w800,
@@ -40,18 +40,31 @@ class HomeHeader extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            boxShadow: AppShadows.soft,
-          ),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings_outlined),
-            splashRadius: 22,
-            color: HomeUiTokens.titleColor,
-          ),
+        Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                boxShadow: AppShadows.soft,
+              ),
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.settings_outlined),
+                splashRadius: 22,
+                color: HomeUiTokens.titleColor,
+              ),
+            ),
+            const Positioned(
+              right: 8,
+              top: -2,
+              child: CircleAvatar(
+                radius: 4,
+                backgroundColor: Color(0xFF8D63FF),
+              ),
+            ),
+          ],
         ),
       ],
     );

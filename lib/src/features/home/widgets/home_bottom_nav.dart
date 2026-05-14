@@ -76,7 +76,7 @@ class _NavItem extends StatelessWidget {
           children: <Widget>[
             AnimatedScale(
               duration: const Duration(milliseconds: AppMotion.fastMs),
-              scale: active ? 1.04 : 1,
+              scale: active ? 1.03 : 1,
               child: Icon(
                 icon,
                 color: active
@@ -84,12 +84,12 @@ class _NavItem extends StatelessWidget {
                     : const Color(0xFF8A91AF),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                fontSize: 13,
+                fontSize: 12.6,
                 color: active
                     ? const Color(0xFF7558FF)
                     : const Color(0xFF737C9E),
@@ -98,8 +98,8 @@ class _NavItem extends StatelessWidget {
             const SizedBox(height: 4),
             AnimatedContainer(
               duration: const Duration(milliseconds: AppMotion.fastMs),
-              height: 2.4,
-              width: active ? 28 : 0,
+              height: 2.2,
+              width: active ? 32 : 0,
               decoration: BoxDecoration(
                 color: const Color(0xFF7558FF),
                 borderRadius: BorderRadius.circular(AppRadius.pill),

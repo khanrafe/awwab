@@ -45,7 +45,7 @@ class HeroStatusCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.md),
                   Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 300),
+                      constraints: const BoxConstraints(maxWidth: 312),
                       child: _orb(),
                     ),
                   ),
@@ -107,7 +107,7 @@ class HeroStatusCard extends StatelessWidget {
         child: Text(
           '${model.auraLevel}',
           style: textTheme.headlineMedium?.copyWith(
-            fontSize: 47,
+            fontSize: 49,
             height: 1,
             color: HomeUiTokens.accentViolet,
             fontWeight: FontWeight.w800,
@@ -176,7 +176,7 @@ class HeroStatusCard extends StatelessWidget {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: textTheme.titleMedium?.copyWith(
-          fontSize: 18,
+          fontSize: 19,
           color: const Color(0xFF3C4FC6),
           fontWeight: FontWeight.w800,
         ),
@@ -185,7 +185,7 @@ class HeroStatusCard extends StatelessWidget {
       Text(
         model.statusDescription,
         style: textTheme.bodyMedium?.copyWith(
-          height: 1.35,
+          height: 1.34,
           fontWeight: FontWeight.w600,
           color: HomeUiTokens.subtitleColor,
         ),
@@ -194,15 +194,11 @@ class HeroStatusCard extends StatelessWidget {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Icon(
-            Icons.verified_user_rounded,
-            color: Color(0xFF4E89FF),
-            size: 30,
-          ),
+          const Icon(Icons.shield_rounded, color: Color(0xFF4E89FF), size: 30),
           const SizedBox(width: AppSpacing.xs),
           Flexible(
             child: Text(
-              'Protection Active',
+              'Protection\nActive',
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF3D4D7A),
@@ -255,10 +251,18 @@ class HeroStatusCard extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: <Color>[
-                const Color(0xFF2B2B66).withValues(alpha: 0.25),
-                const Color(0xFF15153A).withValues(alpha: 0.92),
+                const Color(0xFF2B2B66).withValues(alpha: 0.30),
+                const Color(0xFF15153A).withValues(alpha: 0.95),
               ],
             ),
+          ),
+        ),
+        Positioned(
+          top: 18,
+          child: Icon(
+            Icons.auto_awesome,
+            color: const Color(0xFF8E74FF).withValues(alpha: 0.9),
+            size: 22,
           ),
         ),
         const FittedBox(
@@ -266,7 +270,7 @@ class HeroStatusCard extends StatelessWidget {
           child: Icon(
             Icons.person_rounded,
             color: Color(0xFF0E1140),
-            size: 140,
+            size: 148,
           ),
         ),
         const Positioned(

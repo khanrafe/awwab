@@ -52,24 +52,29 @@ class _QuickActionCardState extends State<QuickActionCard> {
                   child: Icon(
                     widget.action.icon,
                     color: widget.action.color,
-                    size: 30,
+                    size: 27,
                   ),
                 ),
                 const Spacer(),
                 Text(
                   widget.action.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: HomeUiTokens.titleColor,
-                    fontSize: 18,
+                    fontSize: 18 * 0.9,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   widget.action.subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: HomeUiTokens.subtitleColor,
+                    fontSize: 13,
                     height: 1.2,
                   ),
                 ),
@@ -77,7 +82,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: CircleAvatar(
-                    radius: 16,
+                    radius: 15,
                     backgroundColor: Colors.white.withValues(alpha: 0.86),
                     child: Icon(
                       Icons.arrow_forward_rounded,
