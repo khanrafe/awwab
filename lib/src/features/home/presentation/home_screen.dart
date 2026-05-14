@@ -1,8 +1,16 @@
-import 'package:awwab/src/constants/app_constants.dart';
+import 'package:awwab/src/core/responsive_breakpoints.dart';
+import 'package:awwab/src/features/home/data/home_mock_data.dart';
+import 'package:awwab/src/features/home/widgets/hero_status_card.dart';
+import 'package:awwab/src/features/home/widgets/home_bottom_nav.dart';
+import 'package:awwab/src/features/home/widgets/home_header.dart';
+import 'package:awwab/src/features/home/widgets/home_ui_tokens.dart';
+import 'package:awwab/src/features/home/widgets/metric_card.dart';
+import 'package:awwab/src/features/home/widgets/quest_card.dart';
+import 'package:awwab/src/features/home/widgets/quick_action_card.dart';
+import 'package:awwab/src/features/home/widgets/quote_banner.dart';
+import 'package:awwab/src/theme/app_motion.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
-import 'package:awwab/src/widgets/app_scaffold.dart';
 import 'package:awwab/src/widgets/responsive_container.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -11,69 +19,183 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const model = HomeMockData.dashboard;
     final textTheme = Theme.of(context).textTheme;
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+    final bool isTablet = ResponsiveBreakpoints.isTabletOrLarger(context);
+    final bool isCompact = size.width < 390;
+    final double horizontalPadding = HomeUiTokens.screenHorizontalPadding(
+      size.width,
+    );
+    final double headingScale = HomeUiTokens.headingScale(
+      mediaQuery.textScaler.scale(1),
+    );
 
-    return AppScaffold(
-      title: AppConstants.appName,
-      body: ResponsiveContainer(
-        child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          children: <Widget>[
-            Text(
-              'Scalable Flutter Foundation',
-              style: textTheme.headlineMedium,
-            ).animate().fadeIn(duration: 350.ms).slideY(begin: 0.15),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Riverpod, GoRouter, Hive, Material 3, and reusable theming are configured and ready.',
-              style: textTheme.bodyMedium,
-            ).animate().fadeIn(delay: 120.ms, duration: 320.ms),
-            const SizedBox(height: AppSpacing.lg),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Starter Metrics', style: textTheme.titleMedium),
-                    const SizedBox(height: AppSpacing.md),
-                    SizedBox(
-                      height: 180,
-                      child: BarChart(
-                        BarChartData(
-                          titlesData: const FlTitlesData(show: false),
-                          gridData: const FlGridData(show: false),
-                          borderData: FlBorderData(show: false),
-                          barGroups: <BarChartGroupData>[
-                            _bar(0, 4),
-                            _bar(1, 6),
-                            _bar(2, 8),
-                            _bar(3, 7),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      body: SafeArea(
+        child: ResponsiveContainer(
+          maxWidth: 940,
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              isTablet ? AppSpacing.lg : AppSpacing.md,
+              horizontalPadding,
+              AppSpacing.md,
+            ),
+            children: <Widget>[
+              const HomeHeader()
+                  .animate()
+                  .fadeIn(duration: AppMotion.normalMs.ms)
+                  .slideY(begin: 0.04, end: 0),
+              const SizedBox(height: HomeUiTokens.sectionGap),
+              RepaintBoundary(
+                child: HeroStatusCard(model: model, isCompact: isCompact)
+                    .animate()
+                    .fadeIn(
+                      delay: 1.ms * HomeUiTokens.pageStaggerStepMs,
+                      duration: AppMotion.slowMs.ms,
+                    )
+                    .slideY(begin: 0.06, end: 0),
+              ),
+              const SizedBox(height: HomeUiTokens.sectionGap),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool threeColumns = constraints.maxWidth >= 640;
+                  if (threeColumns) {
+                    return Row(
+                      children: <Widget>[
+                        Expanded(child: MetricCard(metric: model.metrics[0])),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(child: MetricCard(metric: model.metrics[1])),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(child: MetricCard(metric: model.metrics[2])),
+                      ],
+                    );
+                  }
+
+                  return Column(
+                    children: model.metrics
+                        .map(
+                          (metric) => Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: AppSpacing.sm,
+                            ),
+                            child: SizedBox(
+                              height: isCompact ? 188 : 200,
+                              child: MetricCard(metric: metric),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ).animate().fadeIn(
+                delay: 2.ms * HomeUiTokens.pageStaggerStepMs,
+                duration: AppMotion.normalMs.ms,
+              ),
+              const SizedBox(height: HomeUiTokens.sectionGap),
+              QuestCard(quest: model.quest)
+                  .animate()
+                  .fadeIn(
+                    delay: 3.ms * HomeUiTokens.pageStaggerStepMs,
+                    duration: AppMotion.normalMs.ms,
+                  )
+                  .slideY(begin: 0.03, end: 0),
+              const SizedBox(height: HomeUiTokens.sectionGapLarge),
+              Text(
+                'QUICK ACTIONS',
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13.2 * headingScale,
+                  letterSpacing: 0.2,
+                  color: HomeUiTokens.titleColor,
                 ),
               ),
-            ).animate().fadeIn(delay: 180.ms, duration: 320.ms).scale(begin: const Offset(0.98, 0.98)),
-          ],
+              const SizedBox(height: AppSpacing.sm),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool threeColumns = constraints.maxWidth >= 700;
+                  final bool twoColumns = constraints.maxWidth >= 470;
+
+                  if (threeColumns) {
+                    return SizedBox(
+                      height: 210,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: QuickActionCard(
+                              action: model.quickActions[0],
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(
+                            child: QuickActionCard(
+                              action: model.quickActions[1],
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(
+                            child: QuickActionCard(
+                              action: model.quickActions[2],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (twoColumns) {
+                    return Wrap(
+                      runSpacing: AppSpacing.sm,
+                      spacing: AppSpacing.sm,
+                      children: model.quickActions
+                          .map(
+                            (action) => SizedBox(
+                              width: (constraints.maxWidth - AppSpacing.sm) / 2,
+                              height: 188,
+                              child: QuickActionCard(action: action),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  }
+
+                  return Column(
+                    children: model.quickActions
+                        .map(
+                          (action) => Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: AppSpacing.sm,
+                            ),
+                            child: SizedBox(
+                              height: 180,
+                              child: QuickActionCard(action: action),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ).animate().fadeIn(
+                delay: 4.ms * HomeUiTokens.pageStaggerStepMs,
+                duration: AppMotion.normalMs.ms,
+              ),
+              const SizedBox(height: HomeUiTokens.sectionGap),
+              QuoteBanner(quote: model.quote).animate().fadeIn(
+                delay: 5.ms * HomeUiTokens.pageStaggerStepMs,
+                duration: AppMotion.normalMs.ms,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              const HomeBottomNav().animate().fadeIn(
+                delay: 6.ms * HomeUiTokens.pageStaggerStepMs,
+                duration: AppMotion.normalMs.ms,
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-
-  BarChartGroupData _bar(int x, double y) {
-    return BarChartGroupData(
-      x: x,
-      barRods: <BarChartRodData>[
-        BarChartRodData(
-          toY: y,
-          width: 18,
-          borderRadius: BorderRadius.circular(6),
-          color: const Color(0xFF0B6E4F),
-        ),
-      ],
     );
   }
 }

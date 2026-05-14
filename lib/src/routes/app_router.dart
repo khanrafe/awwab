@@ -2,8 +2,8 @@ import 'package:awwab/src/features/home/presentation/home_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final appRouterProvider = Provider<GoRouter>((ref) {
-  return GoRouter(
+final appRouterProvider = Provider<GoRouter>(
+  (ref) => GoRouter(
     initialLocation: AppRoutes.home,
     routes: <RouteBase>[
       GoRoute(
@@ -12,8 +12,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
     ],
-  );
-});
+  ),
+);
 
 abstract final class AppRoutes {
   static const home = '/';
