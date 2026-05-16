@@ -9,11 +9,13 @@ import 'package:awwab/src/features/home/widgets/metric_card.dart';
 import 'package:awwab/src/features/home/widgets/quest_card.dart';
 import 'package:awwab/src/features/home/widgets/quick_action_card.dart';
 import 'package:awwab/src/features/home/widgets/quote_banner.dart';
+import 'package:awwab/src/routes/app_router.dart';
 import 'package:awwab/src/theme/app_motion.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
 import 'package:awwab/src/widgets/responsive_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -155,16 +157,38 @@ class _QuickActionsSection extends StatelessWidget {
     builder: (context, constraints) {
       final bool threeColumns = constraints.maxWidth >= 360;
 
+      VoidCallback tapHandler(QuickActionModel action) {
+        if (action.title == 'Log Action') {
+          return () => context.pushNamed(AppRouteNames.logAction);
+        }
+        return () {};
+      }
+
       if (threeColumns) {
         return SizedBox(
           height: constraints.maxWidth >= 700 ? 214 : 198,
           child: Row(
             children: <Widget>[
-              Expanded(child: QuickActionCard(action: actions[0])),
+              Expanded(
+                child: QuickActionCard(
+                  action: actions[0],
+                  onTap: tapHandler(actions[0]),
+                ),
+              ),
               const SizedBox(width: AppSpacing.sm),
-              Expanded(child: QuickActionCard(action: actions[1])),
+              Expanded(
+                child: QuickActionCard(
+                  action: actions[1],
+                  onTap: tapHandler(actions[1]),
+                ),
+              ),
               const SizedBox(width: AppSpacing.sm),
-              Expanded(child: QuickActionCard(action: actions[2])),
+              Expanded(
+                child: QuickActionCard(
+                  action: actions[2],
+                  onTap: tapHandler(actions[2]),
+                ),
+              ),
             ],
           ),
         );
@@ -177,7 +201,10 @@ class _QuickActionsSection extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: AspectRatio(
                   aspectRatio: 1.9,
-                  child: QuickActionCard(action: action),
+                  child: QuickActionCard(
+                    action: action,
+                    onTap: tapHandler(action),
+                  ),
                 ),
               ),
             )

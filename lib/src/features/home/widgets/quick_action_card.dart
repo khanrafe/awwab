@@ -7,9 +7,10 @@ import 'package:awwab/src/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 class QuickActionCard extends StatefulWidget {
-  const QuickActionCard({super.key, required this.action});
+  const QuickActionCard({super.key, required this.action, required this.onTap});
 
   final QuickActionModel action;
+  final VoidCallback onTap;
 
   @override
   State<QuickActionCard> createState() => _QuickActionCardState();
@@ -32,7 +33,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
         scale: _pressed ? 0.985 : 1,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          onTap: () {},
+          onTap: widget.onTap,
           child: Ink(
             padding: const EdgeInsets.all(HomeUiTokens.cardPadding),
             decoration: BoxDecoration(
