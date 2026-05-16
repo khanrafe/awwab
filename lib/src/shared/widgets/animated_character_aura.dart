@@ -13,6 +13,7 @@ class AnimatedCharacterAura extends StatefulWidget {
     this.ringAssetPath = 'assets/images/awwab_aura_ring.png',
     this.showFrontParticles = true,
     this.enableRingRotation = false,
+    this.useProgressRing = true,
   });
 
   final double progress;
@@ -22,6 +23,7 @@ class AnimatedCharacterAura extends StatefulWidget {
   final String ringAssetPath;
   final bool showFrontParticles;
   final bool enableRingRotation;
+  final bool useProgressRing;
 
   @override
   State<AnimatedCharacterAura> createState() => _AnimatedCharacterAuraState();
@@ -128,6 +130,7 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
                         child: _AuraRingLayer(
                           size: widget.size,
                           progress: clampedProgress,
+                          useProgressRing: widget.useProgressRing,
                           ringAssetPath: widget.ringAssetPath,
                           cacheSize: imageCacheSize,
                           rotationTurns: widget.enableRingRotation
@@ -171,8 +174,8 @@ class _BackgroundGlowLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IgnorePointer(
     child: Container(
-      width: size * 0.94,
-      height: size * 0.94,
+      width: size * 0.864,
+      height: size * 0.864,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
@@ -200,6 +203,7 @@ class _AuraRingLayer extends StatelessWidget {
   const _AuraRingLayer({
     required this.size,
     required this.progress,
+    required this.useProgressRing,
     required this.ringAssetPath,
     required this.cacheSize,
     required this.rotationTurns,
@@ -207,6 +211,7 @@ class _AuraRingLayer extends StatelessWidget {
 
   final double size;
   final double progress;
+  final bool useProgressRing;
   final String ringAssetPath;
   final int cacheSize;
   final double rotationTurns;
@@ -214,6 +219,15 @@ class _AuraRingLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double ringSize = size * 1.01;
+    final Widget ring = Transform.rotate(
+      angle: rotationTurns * math.pi * 2,
+      child: Image.asset(
+        ringAssetPath,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+        cacheWidth: cacheSize,
+      ),
+    );
 
     return SizedBox(
       width: ringSize,
@@ -223,37 +237,27 @@ class _AuraRingLayer extends StatelessWidget {
         children: <Widget>[
           Opacity(
             opacity: 0.34,
-            child: Image.asset(
-              ringAssetPath,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.high,
-              cacheWidth: cacheSize,
-            ),
+            child: ring,
           ),
-          ShaderMask(
-            blendMode: BlendMode.srcATop,
-            shaderCallback: (rect) => SweepGradient(
-              startAngle: -math.pi / 2,
-              endAngle: (math.pi * 2) - (math.pi / 2),
-              colors: <Color>[
-                Colors.white,
-                Colors.white,
-                Colors.white.withValues(alpha: 0),
-                Colors.white.withValues(alpha: 0),
-              ],
-              stops: <double>[0, progress, progress, 1],
-              transform: GradientRotation(rotationTurns * math.pi * 2),
-            ).createShader(rect),
-            child: Transform.rotate(
-              angle: rotationTurns * math.pi * 2,
-              child: Image.asset(
-                ringAssetPath,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high,
-                cacheWidth: cacheSize,
-              ),
-            ),
-          ),
+          if (useProgressRing)
+            ShaderMask(
+              blendMode: BlendMode.srcATop,
+              shaderCallback: (rect) => SweepGradient(
+                startAngle: -math.pi / 2,
+                endAngle: (math.pi * 2) - (math.pi / 2),
+                colors: <Color>[
+                  Colors.white,
+                  Colors.white,
+                  Colors.white.withValues(alpha: 0),
+                  Colors.white.withValues(alpha: 0),
+                ],
+                stops: <double>[0, progress, progress, 1],
+                transform: GradientRotation(rotationTurns * math.pi * 2),
+              ).createShader(rect),
+              child: ring,
+            )
+          else
+            Opacity(opacity: 0.92, child: ring),
         ],
       ),
     );
@@ -276,7 +280,7 @@ class _CharacterLayer extends StatelessWidget {
     alignment: const Alignment(0, 0.18),
     child: SizedBox(
       width: size * 0.72,
-      height: size * 0.92,
+      height: size * 0.862,
       child: Image.asset(
         characterAssetPath,
         fit: BoxFit.contain,

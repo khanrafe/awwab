@@ -23,8 +23,8 @@ class HeroStatusCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool shouldStack = constraints.maxWidth < 330;
-        final bool compact = isCompact || constraints.maxWidth < 420;
-        final double orbSize = compact ? 154 : 198;
+        final bool compact = isCompact || constraints.maxWidth < 390;
+        final double orbSize = compact ? 168 : 236;
 
         return DecoratedBox(
           decoration: BoxDecoration(
@@ -55,12 +55,12 @@ class HeroStatusCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
-                        flex: compact ? 33 : 28,
+                        flex: compact ? 28 : 24,
                         child: _leftInfo(textTheme, compact: compact),
                       ),
                       SizedBox(width: compact ? AppSpacing.xs : AppSpacing.sm),
                       Expanded(
-                        flex: compact ? 34 : 44,
+                        flex: compact ? 40 : 52,
                         child: Align(
                           alignment: Alignment.center,
                           child: _orb(
@@ -71,7 +71,7 @@ class HeroStatusCard extends StatelessWidget {
                       ),
                       SizedBox(width: compact ? AppSpacing.xs : AppSpacing.sm),
                       Expanded(
-                        flex: compact ? 33 : 28,
+                        flex: compact ? 32 : 24,
                         child: _rightInfo(textTheme, compact: compact),
                       ),
                     ],
@@ -116,14 +116,14 @@ class HeroStatusCard extends StatelessWidget {
           color: const Color(0xFF8588A3),
         ),
       ),
-      SizedBox(height: compact ? AppSpacing.xs : AppSpacing.sm),
+      SizedBox(height: compact ? 6 : AppSpacing.xs),
       FittedBox(
         fit: BoxFit.scaleDown,
         alignment: Alignment.centerLeft,
         child: Text(
           '${model.auraLevel}',
           style: textTheme.headlineMedium?.copyWith(
-            fontSize: compact ? 42 : 46,
+            fontSize: compact ? 38 : 44,
             height: 1,
             color: HomeUiTokens.accentViolet,
             fontWeight: FontWeight.w800,
@@ -136,7 +136,7 @@ class HeroStatusCard extends StatelessWidget {
         style: textTheme.titleMedium?.copyWith(
           color: const Color(0xFF6448E0),
           fontWeight: FontWeight.w700,
-          fontSize: compact ? 14 : 16,
+          fontSize: compact ? 13 : 14.5,
         ),
       ),
       SizedBox(height: compact ? AppSpacing.sm : AppSpacing.md),
@@ -163,7 +163,7 @@ class HeroStatusCard extends StatelessWidget {
                 model.rankLabel,
                 style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
-                  fontSize: compact ? 13 : 14,
+                  fontSize: compact ? 12.5 : 13.5,
                   color: const Color(0xFF5B4CCA),
                 ),
               ),
@@ -187,13 +187,13 @@ class HeroStatusCard extends StatelessWidget {
           color: const Color(0xFF8588A3),
         ),
       ),
-      SizedBox(height: compact ? AppSpacing.xs : AppSpacing.sm),
+      SizedBox(height: compact ? 6 : AppSpacing.xs),
       Text(
         model.systemStatus,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: textTheme.titleMedium?.copyWith(
-          fontSize: compact ? 14.5 : 16.5,
+          fontSize: compact ? 14 : 15.5,
           color: const Color(0xFF3C4FC6),
           fontWeight: FontWeight.w800,
         ),
@@ -206,7 +206,7 @@ class HeroStatusCard extends StatelessWidget {
         style: textTheme.bodyMedium?.copyWith(
           height: 1.34,
           fontWeight: FontWeight.w600,
-          fontSize: compact ? 13 : 14,
+          fontSize: compact ? 12.5 : 13.5,
           color: HomeUiTokens.subtitleColor,
         ),
       ),
@@ -225,7 +225,7 @@ class HeroStatusCard extends StatelessWidget {
               'Protection\nActive',
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                fontSize: compact ? 13.5 : 14.5,
+                fontSize: compact ? 12.8 : 13.8,
                 color: const Color(0xFF3D4D7A),
                 height: 1.2,
               ),
@@ -250,7 +250,11 @@ class HeroStatusCard extends StatelessWidget {
             ),
           ),
         ),
-        AnimatedCharacterAura(progress: progress, size: size * 0.95),
+        AnimatedCharacterAura(
+          progress: progress,
+          useProgressRing: false,
+          size: size * 0.96,
+        ),
       ],
     ),
   );
@@ -266,7 +270,7 @@ class HeroStatusCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                _xpPill(),
+                _xpHexBadge(),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
@@ -296,7 +300,7 @@ class HeroStatusCard extends StatelessWidget {
 
       return Row(
         children: <Widget>[
-          _xpPill(),
+          _xpHexBadge(),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -327,21 +331,24 @@ class HeroStatusCard extends StatelessWidget {
     },
   );
 
-  Widget _xpPill() => DecoratedBox(
-    decoration: BoxDecoration(
-      gradient: const LinearGradient(
-        colors: <Color>[Color(0xFF7356FF), Color(0xFF947DFF)],
+  Widget _xpHexBadge() => Container(
+    width: 46,
+    height: 46,
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: LinearGradient(
+        colors: <Color>[Color(0xFF6D56F7), Color(0xFF9A83FF)],
       ),
-      borderRadius: BorderRadius.circular(AppRadius.sm),
     ),
-    child: const Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.xs,
-      ),
+    child: const Center(
       child: Text(
         'XP',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w800,
+          fontSize: 19,
+          letterSpacing: 0.2,
+        ),
       ),
     ),
   );
