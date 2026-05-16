@@ -55,7 +55,7 @@ class PathStepPage extends StatelessWidget {
                   Text(
                     'TODAY\'S STEP',
                     style: textTheme.titleMedium?.copyWith(
-                      fontSize: 32 * 0.52,
+                      fontSize: 14.8,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF6D5CFF),
                     ),
@@ -64,7 +64,7 @@ class PathStepPage extends StatelessWidget {
                   Text(
                     step.title,
                     style: textTheme.headlineMedium?.copyWith(
-                      fontSize: 57 * 0.52,
+                      fontSize: 25.5,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF131C4A),
                     ),
@@ -124,7 +124,7 @@ class PathStepPage extends StatelessWidget {
         Text(
           step.reflectTitle,
           style: textTheme.titleMedium?.copyWith(
-            fontSize: 37 * 0.52,
+            fontSize: 16.5,
             fontWeight: FontWeight.w800,
             color: const Color(0xFF131C4A),
           ),

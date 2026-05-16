@@ -48,7 +48,7 @@ class PathStepGuidedCard extends StatelessWidget {
                         style: textTheme.titleMedium?.copyWith(
                           color: const Color(0xFF6D5CFF),
                           fontWeight: FontWeight.w800,
-                          fontSize: 40 * 0.5,
+                          fontSize: 17.5,
                         ),
                       ),
                     ],

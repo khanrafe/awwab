@@ -64,7 +64,7 @@ class PathStepProgressCard extends StatelessWidget {
                                   journey.pathName,
                                   style: textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 43 * 0.52,
+                                    fontSize: 19.0,
                                     color: const Color(0xFF131C4A),
                                   ),
                                 ),
@@ -162,7 +162,7 @@ class _MetaItem extends StatelessWidget {
                 title,
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  fontSize: 32 * 0.52,
+                  fontSize: 14.8,
                   color: const Color(0xFF131C4A),
                 ),
               ),

@@ -46,7 +46,7 @@ class RecoveryPathsMotivationCard extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       color: const Color(0xFF614EE0),
                       fontWeight: FontWeight.w800,
-                      fontSize: 40 * 0.5,
+                      fontSize: 17.5,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),

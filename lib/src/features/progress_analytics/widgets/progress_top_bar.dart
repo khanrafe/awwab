@@ -27,7 +27,7 @@ class ProgressTopBar extends StatelessWidget {
               Text(
                 title,
                 style: textTheme.headlineMedium?.copyWith(
-                  fontSize: 64 * 0.52,
+                  fontSize: 28.5,
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF121B49),
                 ),

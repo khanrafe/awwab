@@ -38,7 +38,7 @@ class LogActionIntroCard extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       color: const Color(0xFF6D5CFF),
                       fontWeight: FontWeight.w800,
-                      fontSize: 44 * 0.5,
+                      fontSize: 44 * 0.46,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
@@ -46,7 +46,7 @@ class LogActionIntroCard extends StatelessWidget {
                     subtitle,
                     style: textTheme.bodyMedium?.copyWith(
                       height: 1.4,
-                      fontSize: 36 * 0.42,
+                      fontSize: 36 * 0.40,
                       color: const Color(0xFF5C6486),
                       fontWeight: FontWeight.w600,
                     ),

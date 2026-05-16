@@ -80,7 +80,7 @@ class PathStepPrimaryButton extends StatelessWidget {
                           style: textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
-                            fontSize: 36 * 0.52,
+                            fontSize: 16.0,
                           ),
                         ),
                       ],
@@ -159,7 +159,7 @@ class _PathStepSecondaryButtonState extends State<PathStepSecondaryButton> {
                           style: textTheme.titleMedium?.copyWith(
                             color: const Color(0xFF6C59E3),
                             fontWeight: FontWeight.w800,
-                            fontSize: 34 * 0.52,
+                            fontSize: 15.2,
                           ),
                         ),
                       ],

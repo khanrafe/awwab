@@ -60,7 +60,7 @@ class RecoveryPathsScreen extends ConsumerWidget {
               Text(
                 model.recommendedTitle,
                 style: textTheme.titleMedium?.copyWith(
-                  fontSize: 42 * 0.52,
+                  fontSize: 18.5,
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF131C4A),
                 ),
@@ -80,7 +80,7 @@ class RecoveryPathsScreen extends ConsumerWidget {
               Text(
                 model.allPathsTitle,
                 style: textTheme.titleMedium?.copyWith(
-                  fontSize: 42 * 0.52,
+                  fontSize: 18.5,
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF131C4A),
                 ),

@@ -5,11 +5,7 @@ import 'package:awwab/src/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 class OverviewStatCard extends StatelessWidget {
-  const OverviewStatCard({
-    super.key,
-    required this.stat,
-    this.compact = false,
-  });
+  const OverviewStatCard({super.key, required this.stat, this.compact = false});
 
   final OverviewStatModel stat;
   final bool compact;
@@ -32,7 +28,11 @@ class OverviewStatCard extends StatelessWidget {
             CircleAvatar(
               radius: compact ? 18 : 22,
               backgroundColor: stat.iconBg,
-              child: Icon(stat.icon, color: stat.iconColor, size: compact ? 20 : 24),
+              child: Icon(
+                stat.icon,
+                color: stat.iconColor,
+                size: compact ? 20 : 24,
+              ),
             ),
             SizedBox(height: compact ? AppSpacing.xs : AppSpacing.sm),
             FittedBox(

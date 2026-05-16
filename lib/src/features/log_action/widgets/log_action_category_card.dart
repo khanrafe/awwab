@@ -70,7 +70,7 @@ class LogActionCategoryCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      fontSize: 34 * 0.52,
+                      fontSize: 15.2,
                       color: const Color(0xFF151E4C),
                     ),
                   ),

@@ -32,7 +32,7 @@ class RecoveryPathsTopBar extends StatelessWidget {
                 Text(
                   title,
                   style: textTheme.headlineMedium?.copyWith(
-                    fontSize: 50 * 0.55,
+                    fontSize: 50 * 0.460,
                     color: const Color(0xFF111A47),
                     fontWeight: FontWeight.w800,
                   ),
@@ -43,7 +43,7 @@ class RecoveryPathsTopBar extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: textTheme.bodyMedium?.copyWith(
                     height: 1.3,
-                    fontSize: 16 * 0.85,
+                    fontSize: 16 * 0.80,
                     color: const Color(0xFF616C8F),
                     fontWeight: FontWeight.w500,
                   ),

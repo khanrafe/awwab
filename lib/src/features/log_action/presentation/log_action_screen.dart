@@ -97,7 +97,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                 Text(
                   model.sectionTitle,
                   style: textTheme.titleMedium?.copyWith(
-                    fontSize: 43 * 0.52,
+                    fontSize: 19.0,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF131C4A),
                   ),
@@ -189,7 +189,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                 Text(
                   model.inputTitle,
                   style: textTheme.titleMedium?.copyWith(
-                    fontSize: 41 * 0.52,
+                    fontSize: 18.0,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF131C4A),
                   ),

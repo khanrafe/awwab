@@ -38,7 +38,7 @@ class RecoveryPathsHeroCard extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       color: const Color(0xFF6D5CFF),
                       fontWeight: FontWeight.w800,
-                      fontSize: 42 * 0.52,
+                      fontSize: 18.5,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),

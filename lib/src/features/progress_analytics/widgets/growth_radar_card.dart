@@ -6,11 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class GrowthRadarCard extends StatelessWidget {
-  const GrowthRadarCard({
-    super.key,
-    required this.areas,
-    this.compact = false,
-  });
+  const GrowthRadarCard({super.key, required this.areas, this.compact = false});
 
   final List<GrowthAreaModel> areas;
   final bool compact;
@@ -43,7 +39,9 @@ class GrowthRadarCard extends StatelessWidget {
               builder: (context, constraints) {
                 final bool stacked = constraints.maxWidth < 700;
                 final Widget radar = SizedBox(
-                  width: stacked ? double.infinity : constraints.maxWidth * 0.42,
+                  width: stacked
+                      ? double.infinity
+                      : constraints.maxWidth * 0.40,
                   height: compact ? 180 : 220,
                   child: RadarChart(
                     RadarChartData(
@@ -53,7 +51,9 @@ class GrowthRadarCard extends StatelessWidget {
                         width: 1.1,
                       ),
                       tickCount: 5,
-                      ticksTextStyle: const TextStyle(color: Colors.transparent),
+                      ticksTextStyle: const TextStyle(
+                        color: Colors.transparent,
+                      ),
                       tickBorderData: const BorderSide(
                         color: Color(0xFFECEFFA),
                         width: 1,
@@ -73,12 +73,16 @@ class GrowthRadarCard extends StatelessWidget {
                       },
                       dataSets: <RadarDataSet>[
                         RadarDataSet(
-                          fillColor: const Color(0xFF7A5DFF).withValues(alpha: 0.28),
+                          fillColor: const Color(
+                            0xFF7A5DFF,
+                          ).withValues(alpha: 0.28),
                           borderColor: const Color(0xFF7A5DFF),
                           borderWidth: 2.2,
                           entryRadius: compact ? 3.5 : 4,
                           dataEntries: areas
-                              .map((e) => RadarEntry(value: e.percent.toDouble()))
+                              .map(
+                                (e) => RadarEntry(value: e.percent.toDouble()),
+                              )
                               .toList(),
                         ),
                       ],
@@ -89,7 +93,9 @@ class GrowthRadarCard extends StatelessWidget {
 
                 final Widget bars = Column(
                   children: areas
-                      .map((area) => _GrowthBarItem(area: area, compact: compact))
+                      .map(
+                        (area) => _GrowthBarItem(area: area, compact: compact),
+                      )
                       .toList(),
                 );
 
@@ -121,10 +127,7 @@ class GrowthRadarCard extends StatelessWidget {
 }
 
 class _GrowthBarItem extends StatelessWidget {
-  const _GrowthBarItem({
-    required this.area,
-    required this.compact,
-  });
+  const _GrowthBarItem({required this.area, required this.compact});
 
   final GrowthAreaModel area;
   final bool compact;

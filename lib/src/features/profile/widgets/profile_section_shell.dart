@@ -39,7 +39,7 @@ class ProfileSectionShell extends StatelessWidget {
                   style: textTheme.titleLarge?.copyWith(
                     color: const Color(0xFF141D4B),
                     fontWeight: FontWeight.w800,
-                    fontSize: compact ? 26 * 0.52 : 30 * 0.52,
+                    fontSize: compact ? 26 * 0.47 : 30 * 0.47,
                   ),
                 ),
                 const Spacer(),

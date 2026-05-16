@@ -64,7 +64,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: HomeUiTokens.titleColor,
-                    fontSize: 18 * 0.9,
+                    fontSize: 14.8,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxs),

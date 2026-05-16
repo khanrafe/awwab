@@ -32,7 +32,7 @@ class PathStepTopBar extends StatelessWidget {
                 Text(
                   title,
                   style: textTheme.headlineMedium?.copyWith(
-                    fontSize: 48 * 0.55,
+                    fontSize: 48 * 0.460,
                     color: const Color(0xFF111A47),
                     fontWeight: FontWeight.w800,
                   ),
@@ -43,7 +43,7 @@ class PathStepTopBar extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: textTheme.bodyMedium?.copyWith(
                     height: 1.3,
-                    fontSize: 16 * 0.86,
+                    fontSize: 13.5,
                     color: const Color(0xFF616C8F),
                     fontWeight: FontWeight.w500,
                   ),

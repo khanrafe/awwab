@@ -5,11 +5,7 @@ import 'package:awwab/src/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 class MilestonesCard extends StatelessWidget {
-  const MilestonesCard({
-    super.key,
-    required this.items,
-    this.compact = false,
-  });
+  const MilestonesCard({super.key, required this.items, this.compact = false});
 
   final List<MilestoneModel> items;
   final bool compact;
@@ -105,10 +101,7 @@ class MilestonesCard extends StatelessWidget {
 }
 
 class _MilestoneItem extends StatelessWidget {
-  const _MilestoneItem({
-    required this.item,
-    required this.compact,
-  });
+  const _MilestoneItem({required this.item, required this.compact});
 
   final MilestoneModel item;
   final bool compact;
@@ -123,7 +116,11 @@ class _MilestoneItem extends StatelessWidget {
         CircleAvatar(
           radius: compact ? 18 : 22,
           backgroundColor: item.iconBg,
-          child: Icon(item.icon, color: item.iconColor, size: compact ? 20 : 24),
+          child: Icon(
+            item.icon,
+            color: item.iconColor,
+            size: compact ? 20 : 24,
+          ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(

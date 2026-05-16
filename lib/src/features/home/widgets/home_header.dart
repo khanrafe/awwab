@@ -20,7 +20,7 @@ class HomeHeader extends StatelessWidget {
             Text(
               'avvab',
               style: textTheme.headlineMedium?.copyWith(
-                fontSize: 56 * 0.38,
+                fontSize: 20.0,
                 height: 1,
                 letterSpacing: -0.8,
                 fontWeight: FontWeight.w800,

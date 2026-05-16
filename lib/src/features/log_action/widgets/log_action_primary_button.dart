@@ -77,7 +77,7 @@ class LogActionPrimaryButton extends StatelessWidget {
                           style: textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
-                            fontSize: 37 * 0.52,
+                            fontSize: 16.5,
                           ),
                         ),
                       ],

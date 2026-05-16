@@ -47,7 +47,7 @@ class QuestCard extends StatelessWidget {
                   Text(
                     quest.title,
                     style: textTheme.titleMedium?.copyWith(
-                      fontSize: 33 * 0.55,
+                      fontSize: 33 * 0.460,
                       fontWeight: FontWeight.w800,
                       color: HomeUiTokens.titleColor,
                       height: 1.2,
@@ -93,7 +93,7 @@ class QuestCard extends StatelessWidget {
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: const Color(0xFF3A3D78),
-                          fontSize: 28 * 0.55,
+                          fontSize: 28 * 0.460,
                         ),
                       ),
                     ],

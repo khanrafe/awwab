@@ -56,7 +56,7 @@ class RecommendedRecoveryPathCard extends StatelessWidget {
                           path.title,
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w800,
-                            fontSize: 42 * 0.52,
+                            fontSize: 18.5,
                             color: const Color(0xFF131C4A),
                           ),
                         ),

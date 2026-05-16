@@ -35,8 +35,8 @@ abstract final class AppTheme {
         filled: true,
         fillColor: const Color(0xFFF7F8FD),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
+          horizontal: 14,
+          vertical: 12,
         ),
         hintStyle: AppTypography.textTheme().bodyMedium?.copyWith(
           color: const Color(0xFF8A93B2),
@@ -57,7 +57,7 @@ abstract final class AppTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(54),
+          minimumSize: const Size.fromHeight(50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.pill),
           ),
@@ -68,7 +68,7 @@ abstract final class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(52),
+          minimumSize: const Size.fromHeight(48),
           side: const BorderSide(color: Color(0xFFE4E8F5)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.pill),
