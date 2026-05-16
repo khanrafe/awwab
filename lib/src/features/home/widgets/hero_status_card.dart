@@ -1,7 +1,6 @@
-import 'dart:math' as math;
-
 import 'package:awwab/src/features/home/models/home_dashboard_model.dart';
 import 'package:awwab/src/features/home/widgets/home_ui_tokens.dart';
+import 'package:awwab/src/shared/widgets/animated_character_aura.dart';
 import 'package:awwab/src/theme/app_radius.dart';
 import 'package:awwab/src/theme/app_shadows.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
@@ -46,7 +45,7 @@ class HeroStatusCard extends StatelessWidget {
                   Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 312),
-                      child: _orb(),
+                      child: _orb(progress: model.xpProgress),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -56,7 +55,10 @@ class HeroStatusCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Expanded(child: _leftInfo(textTheme)),
-                      Expanded(flex: 2, child: _orb()),
+                      Expanded(
+                        flex: 2,
+                        child: _orb(progress: model.xpProgress),
+                      ),
                       Expanded(child: _rightInfo(textTheme)),
                     ],
                   ),
@@ -211,72 +213,20 @@ class HeroStatusCard extends StatelessWidget {
     ],
   );
 
-  Widget _orb() => AspectRatio(
+  Widget _orb({required double progress}) => AspectRatio(
     aspectRatio: 1,
     child: Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(6),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: SweepGradient(
-              colors: <Color>[
-                Color(0xFFA97CFF),
-                Color(0xFFB1D0FF),
-                Color(0xFF9E7AFF),
-                Color(0xFFA97CFF),
-              ],
-              transform: GradientRotation(math.pi / 8),
-            ),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Color(0x338A63FF),
-                blurRadius: 24,
-                offset: Offset(0, 10),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: HomeUiTokens.softSurface,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: <Color>[
-                const Color(0xFF2B2B66).withValues(alpha: 0.30),
-                const Color(0xFF15153A).withValues(alpha: 0.95),
-              ],
+        const Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: HomeUiTokens.softSurface,
             ),
           ),
         ),
-        Positioned(
-          top: 18,
-          child: Icon(
-            Icons.auto_awesome,
-            color: const Color(0xFF8E74FF).withValues(alpha: 0.9),
-            size: 22,
-          ),
-        ),
-        const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Icon(
-            Icons.person_rounded,
-            color: Color(0xFF0E1140),
-            size: 148,
-          ),
-        ),
-        const Positioned(
-          bottom: 48,
-          child: Icon(Icons.auto_awesome, color: Color(0xFF7A63FF), size: 34),
-        ),
+        AnimatedCharacterAura(progress: progress, size: 228),
       ],
     ),
   );

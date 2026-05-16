@@ -7,6 +7,7 @@ import 'package:awwab/src/features/log_action/widgets/log_action_reflection_inpu
 import 'package:awwab/src/features/log_action/widgets/log_action_top_bar.dart';
 import 'package:awwab/src/theme/app_motion.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
+import 'package:awwab/src/widgets/app_bottom_nav.dart';
 import 'package:awwab/src/widgets/responsive_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -50,6 +51,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
     final textTheme = Theme.of(context).textTheme;
     final media = MediaQuery.of(context);
     final bool keyboardOpen = media.viewInsets.bottom > 0;
+    final bool compact = media.size.height < 800 || media.size.width < 390;
 
     if (_controller.text != state.reflection) {
       _controller.value = _controller.value.copyWith(
@@ -67,9 +69,9 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
             duration: const Duration(milliseconds: AppMotion.fastMs),
             curve: Curves.easeOut,
             padding: EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
               keyboardOpen ? AppSpacing.sm : AppSpacing.md,
             ),
             child: ListView(
@@ -83,7 +85,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                     .animate()
                     .fadeIn(duration: AppMotion.normalMs.ms)
                     .slideY(begin: 0.05),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
                 LogActionIntroCard(
                       title: model.bannerTitle,
                       subtitle: model.bannerSubtitle,
@@ -91,7 +93,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                     .animate()
                     .fadeIn(delay: 70.ms, duration: AppMotion.slowMs.ms)
                     .slideY(begin: 0.05),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: compact ? AppSpacing.lg : AppSpacing.xl),
                 Text(
                   model.sectionTitle,
                   style: textTheme.titleMedium?.copyWith(
@@ -183,7 +185,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                   delay: 120.ms,
                   duration: AppMotion.normalMs.ms,
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: compact ? AppSpacing.lg : AppSpacing.xl),
                 Text(
                   model.inputTitle,
                   style: textTheme.titleMedium?.copyWith(
@@ -212,7 +214,7 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                   delay: 180.ms,
                   duration: AppMotion.normalMs.ms,
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
                 LogActionPrimaryButton(
                   label: model.buttonLabel,
                   loading: state.isSubmitting,
@@ -243,11 +245,10 @@ class _LogActionScreenState extends ConsumerState<LogActionScreen> {
                   ),
                 ),
                 if (!keyboardOpen) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xl),
-                  const HomeBottomNav().animate().fadeIn(
-                    delay: 300.ms,
-                    duration: AppMotion.normalMs.ms,
-                  ),
+                  SizedBox(height: compact ? AppSpacing.lg : AppSpacing.xl),
+                  const HomeBottomNav(activeTab: AppNavTab.tasks)
+                      .animate()
+                      .fadeIn(delay: 300.ms, duration: AppMotion.normalMs.ms),
                 ],
               ],
             ),

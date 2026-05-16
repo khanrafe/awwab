@@ -8,6 +8,7 @@ import 'package:awwab/src/features/recovery_paths/widgets/recovery_paths_top_bar
 import 'package:awwab/src/routes/app_router.dart';
 import 'package:awwab/src/theme/app_motion.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
+import 'package:awwab/src/widgets/app_bottom_nav.dart';
 import 'package:awwab/src/widgets/responsive_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -23,6 +24,8 @@ class RecoveryPathsScreen extends ConsumerWidget {
     final notifier = ref.read(recoveryPathsProvider.notifier);
     final model = state.model;
     final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.sizeOf(context);
+    final bool compact = size.height < 800 || size.width < 390;
 
     return Scaffold(
       body: SafeArea(
@@ -30,11 +33,11 @@ class RecoveryPathsScreen extends ConsumerWidget {
           maxWidth: 980,
           child: ListView(
             physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.md,
+            padding: EdgeInsets.fromLTRB(
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
             ),
             children: <Widget>[
               RecoveryPathsTopBar(
@@ -45,7 +48,7 @@ class RecoveryPathsScreen extends ConsumerWidget {
                   .animate()
                   .fadeIn(duration: AppMotion.normalMs.ms)
                   .slideY(begin: 0.04),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
               RecoveryPathsHeroCard(
                     title: model.heroTitle,
                     subtitle: model.heroSubtitle,
@@ -53,7 +56,7 @@ class RecoveryPathsScreen extends ConsumerWidget {
                   .animate()
                   .fadeIn(delay: 70.ms, duration: AppMotion.slowMs.ms)
                   .slideY(begin: 0.05),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
               Text(
                 model.recommendedTitle,
                 style: textTheme.titleMedium?.copyWith(
@@ -73,7 +76,7 @@ class RecoveryPathsScreen extends ConsumerWidget {
                 delay: 140.ms,
                 duration: AppMotion.normalMs.ms,
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
               Text(
                 model.allPathsTitle,
                 style: textTheme.titleMedium?.copyWith(
@@ -108,8 +111,8 @@ class RecoveryPathsScreen extends ConsumerWidget {
                 delay: 350.ms,
                 duration: AppMotion.normalMs.ms,
               ),
-              const SizedBox(height: AppSpacing.lg),
-              const HomeBottomNav().animate().fadeIn(
+              SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
+              const HomeBottomNav(activeTab: AppNavTab.tasks).animate().fadeIn(
                 delay: 420.ms,
                 duration: AppMotion.normalMs.ms,
               ),

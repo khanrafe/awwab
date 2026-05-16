@@ -1,0 +1,105 @@
+import 'package:awwab/src/features/profile/models/profile_model.dart';
+import 'package:flutter/material.dart';
+
+const ProfileModel kProfileModel = ProfileModel(
+  title: 'Profile',
+  subtitle: 'Your journey. Your progress. Your victory.',
+  name: 'Awwab',
+  level: 12,
+  levelTitle: 'Rising',
+  quote: '"I\'m not perfect, but I\'m becoming better every day."',
+  streak: 16,
+  purity: 92,
+  energy: 86,
+  totalXp: 1280,
+  auraProgress: 0.64,
+  currentXp: 1280,
+  targetXp: 2000,
+  recoverySummary: <ProfileSummaryStat>[
+    ProfileSummaryStat(
+      label: 'Actions Logged',
+      value: '28',
+      icon: Icons.checklist_rounded,
+      iconColor: Color(0xFF745CFF),
+      iconBg: Color(0xFFECE8FF),
+    ),
+    ProfileSummaryStat(
+      label: 'Steps Completed',
+      value: '16',
+      icon: Icons.check_circle_rounded,
+      iconColor: Color(0xFF36C87A),
+      iconBg: Color(0xFFE8FBF1),
+    ),
+    ProfileSummaryStat(
+      label: 'Paths Taken',
+      value: '7',
+      icon: Icons.groups_rounded,
+      iconColor: Color(0xFFF39A3B),
+      iconBg: Color(0xFFFFF1E3),
+    ),
+  ],
+  achievements: <AchievementModel>[
+    AchievementModel(
+      title: '7 Day Streak',
+      subtitle: 'Consistency',
+      icon: Icons.local_fire_department_rounded,
+      color: Color(0xFF745CFF),
+      bg: Color(0xFFEDE8FF),
+      unlocked: true,
+    ),
+    AchievementModel(
+      title: '10 Steps',
+      subtitle: 'Perseverance',
+      icon: Icons.gps_fixed_rounded,
+      color: Color(0xFF37C879),
+      bg: Color(0xFFE9FBEF),
+      unlocked: true,
+    ),
+    AchievementModel(
+      title: 'First Week',
+      subtitle: 'Milestone',
+      icon: Icons.flag_rounded,
+      color: Color(0xFF4A8FFF),
+      bg: Color(0xFFEAF2FF),
+      unlocked: true,
+    ),
+    AchievementModel(
+      title: 'Rising Star',
+      subtitle: 'Level 10',
+      icon: Icons.auto_awesome_rounded,
+      color: Color(0xFFF5B529),
+      bg: Color(0xFFFFF6DF),
+      unlocked: true,
+    ),
+    AchievementModel(
+      title: 'Unstoppable',
+      subtitle: 'Level 20',
+      icon: Icons.lock_rounded,
+      color: Color(0xFFB9BED3),
+      bg: Color(0xFFF1F3FA),
+      unlocked: false,
+    ),
+  ],
+  preferences: <PreferenceItem>[
+    PreferenceItem(
+      title: 'Notifications',
+      subtitle: 'Reminders, system updates',
+      icon: Icons.notifications_none_rounded,
+    ),
+    PreferenceItem(
+      title: 'Appearance',
+      subtitle: 'Theme, colors, animations',
+      icon: Icons.wb_sunny_outlined,
+    ),
+    PreferenceItem(
+      title: 'Privacy',
+      subtitle: 'Data, security, log privacy',
+      icon: Icons.lock_outline_rounded,
+    ),
+    PreferenceItem(
+      title: 'About awwab',
+      subtitle: 'Version 1.0.0',
+      icon: Icons.info_outline_rounded,
+    ),
+  ],
+);

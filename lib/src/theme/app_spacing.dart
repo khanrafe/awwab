@@ -5,4 +5,9 @@ abstract final class AppSpacing {
   static const md = 16.0;
   static const lg = 24.0;
   static const xl = 32.0;
+
+  static const pageInsetCompact = sm;
+  static const pageInsetRegular = md;
+  static const sectionGapCompact = sm;
+  static const sectionGapRegular = md;
 }

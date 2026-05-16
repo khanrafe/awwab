@@ -1,6 +1,8 @@
 import 'package:awwab/src/features/home/presentation/home_screen.dart';
 import 'package:awwab/src/features/log_action/presentation/log_action_screen.dart';
 import 'package:awwab/src/features/path_step/presentation/path_step_screen.dart';
+import 'package:awwab/src/features/profile/presentation/profile_screen.dart';
+import 'package:awwab/src/features/progress_analytics/presentation/progress_analytics_screen.dart';
 import 'package:awwab/src/features/recovery_paths/presentation/recovery_paths_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +31,16 @@ final appRouterProvider = Provider<GoRouter>(
         name: AppRouteNames.pathStep,
         builder: (context, state) => const PathStepScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.progressAnalytics,
+        name: AppRouteNames.progressAnalytics,
+        builder: (context, state) => const ProgressAnalyticsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profile,
+        name: AppRouteNames.profile,
+        builder: (context, state) => const ProfileScreen(),
+      ),
     ],
   ),
 );
@@ -38,6 +50,8 @@ abstract final class AppRoutes {
   static const logAction = '/log-action';
   static const recoveryPaths = '/recovery-paths';
   static const pathStep = '/path-step';
+  static const progressAnalytics = '/progress-analytics';
+  static const profile = '/profile';
 }
 
 abstract final class AppRouteNames {
@@ -45,4 +59,6 @@ abstract final class AppRouteNames {
   static const logAction = 'logAction';
   static const recoveryPaths = 'recoveryPaths';
   static const pathStep = 'pathStep';
+  static const progressAnalytics = 'progressAnalytics';
+  static const profile = 'profile';
 }

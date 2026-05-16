@@ -6,6 +6,7 @@ import 'package:awwab/src/features/path_step/widgets/path_step_progress_card.dar
 import 'package:awwab/src/features/path_step/widgets/path_step_top_bar.dart';
 import 'package:awwab/src/theme/app_motion.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
+import 'package:awwab/src/widgets/app_bottom_nav.dart';
 import 'package:awwab/src/widgets/responsive_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -47,6 +48,7 @@ class _PathStepScreenState extends ConsumerState<PathStepScreen> {
     final notifier = ref.read(pathStepProvider.notifier);
     final media = MediaQuery.of(context);
     final bool keyboardOpen = media.viewInsets.bottom > 0;
+    final bool compact = media.size.height < 800 || media.size.width < 390;
     final journey = state.journey;
 
     return Scaffold(
@@ -58,9 +60,9 @@ class _PathStepScreenState extends ConsumerState<PathStepScreen> {
             duration: const Duration(milliseconds: AppMotion.fastMs),
             curve: Curves.easeOut,
             padding: EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
+              compact ? AppSpacing.sm : AppSpacing.md,
               keyboardOpen ? AppSpacing.sm : AppSpacing.md,
             ),
             child: Column(
@@ -73,7 +75,7 @@ class _PathStepScreenState extends ConsumerState<PathStepScreen> {
                     .animate()
                     .fadeIn(duration: AppMotion.normalMs.ms)
                     .slideY(begin: 0.04),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
                 PathStepProgressCard(
                   journey: journey,
                   currentIndex: state.currentIndex,
@@ -156,11 +158,10 @@ class _PathStepScreenState extends ConsumerState<PathStepScreen> {
                   ),
                 ),
                 if (!keyboardOpen) ...<Widget>[
-                  const SizedBox(height: AppSpacing.md),
-                  const HomeBottomNav().animate().fadeIn(
-                    delay: 260.ms,
-                    duration: AppMotion.normalMs.ms,
-                  ),
+                  SizedBox(height: compact ? AppSpacing.sm : AppSpacing.md),
+                  const HomeBottomNav(activeTab: AppNavTab.tasks)
+                      .animate()
+                      .fadeIn(delay: 260.ms, duration: AppMotion.normalMs.ms),
                 ],
               ],
             ),

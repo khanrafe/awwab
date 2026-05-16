@@ -1,7 +1,6 @@
-import 'dart:math' as math;
-
 import 'package:awwab/src/features/path_step/models/path_step_model.dart';
 import 'package:awwab/src/features/path_step/widgets/path_progress_pill_row.dart';
+import 'package:awwab/src/shared/widgets/animated_character_aura.dart';
 import 'package:awwab/src/theme/app_radius.dart';
 import 'package:awwab/src/theme/app_shadows.dart';
 import 'package:awwab/src/theme/app_spacing.dart';
@@ -89,10 +88,9 @@ class PathStepProgressCard extends StatelessWidget {
                         curve: Curves.easeOutCubic,
                         builder: (context, value, _) => PathProgressPillRow(
                           total: journey.totalSteps,
-                          current: math.max(
-                            1,
-                            (value * journey.totalSteps).round(),
-                          ),
+                          current: ((value * journey.totalSteps).round() < 1)
+                              ? 1
+                              : (value * journey.totalSteps).round(),
                           accent: journey.pathAccent,
                         ),
                       ),
@@ -100,7 +98,7 @@ class PathStepProgressCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                const _CharacterRing(),
+                _CharacterRing(progress: completionPercent),
               ],
             ),
             const SizedBox(height: AppSpacing.md),
@@ -184,58 +182,14 @@ class _MetaItem extends StatelessWidget {
 }
 
 class _CharacterRing extends StatelessWidget {
-  const _CharacterRing();
+  const _CharacterRing({required this.progress});
+
+  final double progress;
 
   @override
   Widget build(BuildContext context) => SizedBox(
     width: 205,
     height: 205,
-    child: Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Container(
-          width: 188,
-          height: 188,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: SweepGradient(
-              colors: <Color>[
-                Color(0xFFB99DFF),
-                Color(0xFFDBECFF),
-                Color(0xFF9E80FF),
-                Color(0xFFB99DFF),
-              ],
-              transform: GradientRotation(math.pi / 11),
-            ),
-          ),
-        ),
-        Container(
-          width: 166,
-          height: 166,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFFFAFAFF),
-          ),
-        ),
-        Container(
-          width: 132,
-          height: 132,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: <Color>[
-                const Color(0xFFBDB3FF).withValues(alpha: 0.35),
-                const Color(0xFF2F2F8E).withValues(alpha: 0.9),
-              ],
-            ),
-          ),
-        ),
-        const Icon(Icons.person_rounded, color: Color(0xFF1E216A), size: 124),
-        const Positioned(
-          bottom: 44,
-          child: Icon(Icons.auto_awesome, color: Color(0xFF8F7BFF), size: 26),
-        ),
-      ],
-    ),
+    child: AnimatedCharacterAura(progress: progress, size: 196),
   );
 }
