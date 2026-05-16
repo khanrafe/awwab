@@ -27,3 +27,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/awwab_character_main.jpg
+    - assets/images/awwab_character.png
+    - assets/images/awwab_aura_ring.png

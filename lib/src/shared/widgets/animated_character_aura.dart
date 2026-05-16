@@ -9,20 +9,19 @@ class AnimatedCharacterAura extends StatefulWidget {
     required this.progress,
     this.size = 220,
     this.glowColor = const Color(0xFF8C73FF),
-    this.ringColors = const <Color>[
-      Color(0xFFA97CFF),
-      Color(0xFFBCD9FF),
-      Color(0xFF8E6DFF),
-      Color(0xFFA97CFF),
-    ],
-    this.heroAssetPath = 'assets/images/awwab_character_main.jpg',
+    this.characterAssetPath = 'assets/images/awwab_character.png',
+    this.ringAssetPath = 'assets/images/awwab_aura_ring.png',
+    this.showFrontParticles = true,
+    this.enableRingRotation = false,
   });
 
   final double progress;
   final double size;
   final Color glowColor;
-  final List<Color> ringColors;
-  final String heroAssetPath;
+  final String characterAssetPath;
+  final String ringAssetPath;
+  final bool showFrontParticles;
+  final bool enableRingRotation;
 
   @override
   State<AnimatedCharacterAura> createState() => _AnimatedCharacterAuraState();
@@ -33,22 +32,45 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
   late final AnimationController _floatController;
   late final AnimationController _pulseController;
   late final AnimationController _fadeController;
+  late final AnimationController _rotationController;
 
   @override
   void initState() {
     super.initState();
     _floatController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 3600),
+      duration: const Duration(milliseconds: 4200),
     )..repeat(reverse: true);
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2800),
+      duration: const Duration(milliseconds: 3000),
     )..repeat(reverse: true);
     _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: AppMotion.slowMs),
     )..forward();
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 42000),
+    );
+
+    if (widget.enableRingRotation) {
+      _rotationController.repeat();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimatedCharacterAura oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.enableRingRotation == widget.enableRingRotation) {
+      return;
+    }
+    if (widget.enableRingRotation) {
+      _rotationController.repeat();
+    } else {
+      _rotationController.stop();
+      _rotationController.value = 0;
+    }
   }
 
   @override
@@ -56,12 +78,15 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
     _floatController.dispose();
     _pulseController.dispose();
     _fadeController.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double clampedProgress = widget.progress.clamp(0, 1);
+    final double pixelRatio = MediaQuery.devicePixelRatioOf(context);
+    final int imageCacheSize = (widget.size * pixelRatio * 1.45).round();
 
     return RepaintBoundary(
       child: AnimatedBuilder(
@@ -69,12 +94,17 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
           _floatController,
           _pulseController,
           _fadeController,
+          _rotationController,
         ]),
         builder: (context, child) {
           final double floatOffset =
-              math.sin(_floatController.value * math.pi * 2) * 4;
-          final double pulseScale = 0.985 + (_pulseController.value * 0.02);
-          final double glowOpacity = 0.24 + (_pulseController.value * 0.14);
+              math.sin(_floatController.value * math.pi * 2) * 4.2;
+          final double ringBobOffset =
+              math.sin((_floatController.value * math.pi * 2) + 0.7) * 2;
+          final double pulseScale = 0.985 + (_pulseController.value * 0.018);
+          final double glowOpacity = 0.17 + (_pulseController.value * 0.16);
+          final double frontSparkleOpacity =
+              0.38 + (_pulseController.value * 0.32);
 
           return Opacity(
             opacity: Curves.easeOut.transform(_fadeController.value),
@@ -88,74 +118,33 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
                   child: Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      Container(
-                        width: widget.size * 0.96,
-                        height: widget.size * 0.96,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: widget.glowColor.withValues(
-                                alpha: glowOpacity,
-                              ),
-                              blurRadius: widget.size * 0.11,
-                              spreadRadius: widget.size * 0.004,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
+                      _BackgroundGlowLayer(
+                        size: widget.size,
+                        glowColor: widget.glowColor,
+                        glowOpacity: glowOpacity,
                       ),
-                      CustomPaint(
-                        size: Size(widget.size * 0.94, widget.size * 0.94),
-                        painter: _AuraRingPainter(
+                      Transform.translate(
+                        offset: Offset(0, ringBobOffset),
+                        child: _AuraRingLayer(
+                          size: widget.size,
                           progress: clampedProgress,
-                          ringColors: widget.ringColors,
+                          ringAssetPath: widget.ringAssetPath,
+                          cacheSize: imageCacheSize,
+                          rotationTurns: widget.enableRingRotation
+                              ? (_rotationController.value * 0.03)
+                              : 0,
                         ),
                       ),
-                      Container(
-                        width: widget.size * 0.78,
-                        height: widget.size * 0.78,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: <Color>[
-                              const Color(0xFF2A2C76).withValues(alpha: 0.22),
-                              const Color(0xFF171A52).withValues(alpha: 0.80),
-                            ],
-                          ),
-                        ),
+                      _CharacterLayer(
+                        size: widget.size,
+                        characterAssetPath: widget.characterAssetPath,
+                        cacheSize: imageCacheSize,
                       ),
-                      ClipOval(
-                        child: SizedBox(
-                          width: widget.size * 0.82,
-                          height: widget.size * 0.82,
-                          child: Image.asset(
-                            widget.heroAssetPath,
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
-                            color: const Color(
-                              0xFFEDF0FF,
-                            ).withValues(alpha: 0.92),
-                            colorBlendMode: BlendMode.screen,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                                  Icons.person_rounded,
-                                  color: Color(0xFF171C62),
-                                  size: 120,
-                                ),
-                          ),
+                      if (widget.showFrontParticles)
+                        _FrontParticlesLayer(
+                          size: widget.size,
+                          opacity: frontSparkleOpacity,
                         ),
-                      ),
-                      Positioned(
-                        top: widget.size * 0.09,
-                        child: Icon(
-                          Icons.auto_awesome,
-                          color: const Color(
-                            0xFFD4C7FF,
-                          ).withValues(alpha: 0.92),
-                          size: widget.size * 0.10,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -168,48 +157,177 @@ class _AnimatedCharacterAuraState extends State<AnimatedCharacterAura>
   }
 }
 
-class _AuraRingPainter extends CustomPainter {
-  const _AuraRingPainter({required this.progress, required this.ringColors});
+class _BackgroundGlowLayer extends StatelessWidget {
+  const _BackgroundGlowLayer({
+    required this.size,
+    required this.glowColor,
+    required this.glowOpacity,
+  });
 
-  final double progress;
-  final List<Color> ringColors;
+  final double size;
+  final Color glowColor;
+  final double glowOpacity;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final Offset center = size.center(Offset.zero);
-    final double radius = (size.width / 2) - 10;
+  Widget build(BuildContext context) => IgnorePointer(
+    child: Container(
+      width: size * 0.94,
+      height: size * 0.94,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: <Color>[
+            glowColor.withValues(alpha: 0.05),
+            glowColor.withValues(alpha: 0.24),
+            glowColor.withValues(alpha: 0.02),
+          ],
+          stops: const <double>[0.18, 0.62, 1],
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: glowColor.withValues(alpha: glowOpacity),
+            blurRadius: size * 0.18,
+            spreadRadius: size * 0.026,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
-    final Paint trackPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 13
-      ..color = const Color(0xFFE7EAF8)
-      ..strokeCap = StrokeCap.round;
+class _AuraRingLayer extends StatelessWidget {
+  const _AuraRingLayer({
+    required this.size,
+    required this.progress,
+    required this.ringAssetPath,
+    required this.cacheSize,
+    required this.rotationTurns,
+  });
 
-    canvas.drawCircle(center, radius, trackPaint);
+  final double size;
+  final double progress;
+  final String ringAssetPath;
+  final int cacheSize;
+  final double rotationTurns;
 
-    final Rect arcRect = Rect.fromCircle(center: center, radius: radius);
-    final SweepGradient gradient = SweepGradient(
-      startAngle: -math.pi / 2,
-      endAngle: (math.pi * 2) - (math.pi / 2),
-      colors: ringColors,
-    );
+  @override
+  Widget build(BuildContext context) {
+    final double ringSize = size * 1.01;
 
-    final Paint progressPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 13
-      ..strokeCap = StrokeCap.round
-      ..shader = gradient.createShader(arcRect);
-
-    canvas.drawArc(
-      arcRect,
-      -math.pi / 2,
-      (math.pi * 2) * progress,
-      false,
-      progressPaint,
+    return SizedBox(
+      width: ringSize,
+      height: ringSize,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Opacity(
+            opacity: 0.34,
+            child: Image.asset(
+              ringAssetPath,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+              cacheWidth: cacheSize,
+            ),
+          ),
+          ShaderMask(
+            blendMode: BlendMode.srcATop,
+            shaderCallback: (rect) => SweepGradient(
+              startAngle: -math.pi / 2,
+              endAngle: (math.pi * 2) - (math.pi / 2),
+              colors: <Color>[
+                Colors.white,
+                Colors.white,
+                Colors.white.withValues(alpha: 0),
+                Colors.white.withValues(alpha: 0),
+              ],
+              stops: <double>[0, progress, progress, 1],
+              transform: GradientRotation(rotationTurns * math.pi * 2),
+            ).createShader(rect),
+            child: Transform.rotate(
+              angle: rotationTurns * math.pi * 2,
+              child: Image.asset(
+                ringAssetPath,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+                cacheWidth: cacheSize,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+class _CharacterLayer extends StatelessWidget {
+  const _CharacterLayer({
+    required this.size,
+    required this.characterAssetPath,
+    required this.cacheSize,
+  });
+
+  final double size;
+  final String characterAssetPath;
+  final int cacheSize;
 
   @override
-  bool shouldRepaint(covariant _AuraRingPainter oldDelegate) =>
-      oldDelegate.progress != progress || oldDelegate.ringColors != ringColors;
+  Widget build(BuildContext context) => Align(
+    alignment: const Alignment(0, 0.18),
+    child: SizedBox(
+      width: size * 0.72,
+      height: size * 0.92,
+      child: Image.asset(
+        characterAssetPath,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+        cacheWidth: cacheSize,
+      ),
+    ),
+  );
+}
+
+class _FrontParticlesLayer extends StatelessWidget {
+  const _FrontParticlesLayer({required this.size, required this.opacity});
+
+  final double size;
+  final double opacity;
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(
+    child: Opacity(
+      opacity: opacity,
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              left: size * 0.18,
+              top: size * 0.32,
+              child: _sparkle(size * 0.05),
+            ),
+            Positioned(
+              right: size * 0.20,
+              top: size * 0.28,
+              child: _sparkle(size * 0.04),
+            ),
+            Positioned(
+              right: size * 0.27,
+              bottom: size * 0.24,
+              child: _sparkle(size * 0.045),
+            ),
+            Positioned(
+              left: size * 0.30,
+              bottom: size * 0.18,
+              child: _sparkle(size * 0.038),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  Widget _sparkle(double iconSize) =>
+      Icon(Icons.auto_awesome, size: iconSize, color: const Color(0xFFE4D8FF));
 }
